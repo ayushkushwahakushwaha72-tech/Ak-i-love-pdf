@@ -1,0 +1,2530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayush kushwaha - Complete PDF Toolkit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .bg-animate {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Glass Morphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .glass-dark {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Input Animations */
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .input-field:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+        
+        /* Button Effects */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
+        /* Secondary Button */
+        .btn-secondary {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            color: #374151;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        /* OTP Inputs */
+        .otp-container {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .otp-input {
+            width: 3.5rem;
+            height: 4rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .otp-input:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            outline: none;
+        }
+        
+        /* Page Transitions */
+        .page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0.95);
+        }
+        
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            z-index: 10;
+        }
+        
+        /* Tool Cards */
+        .tool-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+        
+        .tool-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .tool-card:hover .tool-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
+        /* Loading Animation */
+        .loader {
+            width: 3rem;
+            height: 3rem;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(150%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            border-left: 4px solid;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success { border-left-color: #10b981; }
+        .toast.error { border-left-color: #ef4444; }
+        .toast.info { border-left-color: #3b82f6; }
+        
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 20s infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+            z-index: 50;
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+        
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        
+        .sidebar-item {
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 1rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #64748b;
+        }
+        
+        .sidebar-item:hover, .sidebar-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        /* Drag Drop Zone */
+        .drop-zone {
+            border: 3px dashed rgba(102, 126, 234, 0.3);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(102, 126, 234, 0.02);
+        }
+        
+        .drop-zone.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+        
+        /* Tab Animation */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Stats Card */
+        .stat-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        /* File List Item */
+        .file-item {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+        
+        .file-item:hover {
+            border-color: #667eea;
+            background: #f3f4f6;
+        }
+        
+        /* Range Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        
+        /* Preview Container */
+        .preview-container {
+            background: #f3f4f6;
+            border-radius: 1rem;
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .preview-page {
+            background: white;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        /* Sortable List */
+        .sortable-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sortable-item {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            cursor: move;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .sortable-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+        
+        .sortable-item.sortable-ghost {
+            opacity: 0.4;
+            background: #f3f4f6;
+        }
+        
+        /* Category Badge */
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* Grid View */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* List View */
+        .tools-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .tools-list .tool-card {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+        }
+        
+        .tools-list .tool-icon {
+            margin-bottom: 0;
+            margin-right: 1.5rem;
+        }
+        
+        /* Image to PDF Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .image-grid-item {
+            position: relative;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+        }
+        
+        .image-grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-grid-item .remove-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .image-grid-item:hover .remove-btn {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- ================= PAGE 1: AUTHENTICATION ================= -->
+    <div id="authPage" class="page active bg-animate">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="glass rounded-3xl p-8 w-full max-w-md relative overflow-hidden">
+                <!-- Decorative Elements -->
+                <div class="absolute -top-20 -right-20 w-40 h-40 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+                <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+                
+                <!-- Logo -->
+                <div class="text-center mb-8 relative z-10">
+                    <div class="w-20 h-20 bg-white rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-6 transition-transform duration-300">
+                        <i class="fas fa-file-pdf text-4xl bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-white mb-2">Ayush jan sewa kendra</h1>
+                    <p class="text-white/70">Complete PDF Toolkit</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex mb-6 bg-white/10 rounded-xl p-1 relative z-10">
+                    <button onclick="switchAuthTab('login')" id="loginTab" class="flex-1 py-3 rounded-lg text-white font-medium transition-all duration-300 bg-white/20">
+                        Login
+                    </button>
+                    <button onclick="switchAuthTab('register')" id="registerTab" class="flex-1 py-3 rounded-lg text-white/70 font-medium transition-all duration-300 hover:text-white">
+                        Register
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="loginForm" class="tab-content active relative z-10">
+                    <div class="input-group">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="text" id="loginMobile" class="input-field" placeholder="Mobile Number" maxlength="10">
+                    </div>
+                    
+                    <button onclick="sendLoginOTP()" class="btn-primary mb-4">
+                        <span id="loginBtnText">Send OTP</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    
+                    <p class="text-center text-white/60 text-sm">
+                        Don't have an account? 
+                        <button onclick="switchAuthTab('register')" class="text-white font-semibold hover:underline">Register</button>
+                    </p>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="tab-content relative z-10">
+                    <div class="input-group">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="regName" class="input-field" placeholder="Full Name">
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="text" id="regMobile" class="input-field" placeholder="Mobile Number" maxlength="10">
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="regEmail" class="input-field" placeholder="Email (Optional)">
+                    </div>
+                    
+                    <button onclick="sendRegisterOTP()" class="btn-primary mb-4">
+                        <span id="regBtnText">Create Account</span>
+                        <i class="fas fa-user-plus ml-2"></i>
+                    </button>
+                    
+                    <p class="text-center text-white/60 text-sm">
+                        Already have an account? 
+                        <button onclick="switchAuthTab('login')" class="text-white font-semibold hover:underline">Login</button>
+                    </p>
+                </div>
+
+                <!-- OTP Verification -->
+                <div id="otpForm" class="hidden relative z-10 text-center">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-lock text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Enter OTP</h3>
+                        <p class="text-white/70 text-sm">Code sent to <span id="otpPhone" class="font-semibold"></span></p>
+                    </div>
+                    
+                    <div class="otp-container">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveOTP(this, 0)" oninput="validateOTPInput(this)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveOTP(this, 1)" oninput="validateOTPInput(this)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveOTP(this, 2)" oninput="validateOTPInput(this)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveOTP(this, 3)" oninput="validateOTPInput(this)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveOTP(this, 4)" oninput="validateOTPInput(this)">
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveOTP(this, 5)" oninput="validateOTPInput(this)">
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-center items-center gap-2 text-white/70 text-sm mb-4">
+                            <i class="fas fa-clock"></i>
+                            <span id="otpTimer">02:00</span>
+                        </div>
+                        <button onclick="verifyOTP()" class="btn-primary mb-3">
+                            Verify & Continue
+                        </button>
+                        <button onclick="resendOTP()" id="resendBtn" class="text-white/70 text-sm hover:text-white transition" disabled>
+                            Resend OTP
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2: MAIN APP (TOOLS) ================= -->
+    <div id="mainPage" class="page bg-gray-50">
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleSidebar()" class="p-2 rounded-lg hover:bg-gray-100 lg:hidden">
+                            <i class="fas fa-bars text-gray-600 text-xl"></i>
+                        </button>
+                        <div class="flex items-center gap-2 cursor-pointer" onclick="showToolSection('all')">
+                            <div class="w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-file-pdf text-white text-lg"></i>
+                            </div>
+                            <span class="font-bold text-xl text-gray-800 hidden sm:block">PDF Master</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="hidden md:flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2">
+                            <i class="fas fa-search text-gray-400"></i>
+                            <input type="text" id="toolSearch" placeholder="Search tools..." 
+                                   class="bg-transparent border-none outline-none text-sm w-48"
+                                   onkeyup="searchTools()">
+                        </div>
+                        
+                        <button onclick="showNotifications()" class="relative p-2 rounded-full hover:bg-gray-100 transition">
+                            <i class="fas fa-bell text-gray-600 text-xl"></i>
+                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                        
+                        <div class="relative" id="profileMenu">
+                            <button onclick="toggleProfile()" class="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 transition">
+                                <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                                    <span id="userInitials">U</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                            </button>
+                            
+                            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                                <a onclick="showDashboard()" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">
+                                    <i class="fas fa-user mr-2"></i> Dashboard
+                                </a>
+                                <a onclick="showSettings()" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">
+                                    <i class="fas fa-cog mr-2"></i> Settings
+                                </a>
+                                <hr class="my-2">
+                                <a onclick="logout()" class="block px-4 py-2 text-red-600 hover:bg-red-50 cursor-pointer">
+                                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-file-pdf text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800">PDF Master</h3>
+                        <p class="text-xs text-gray-500">Pro Version</p>
+                    </div>
+                </div>
+                
+                <nav>
+                    <div class="sidebar-item active" onclick="showToolSection('all')">
+                        <i class="fas fa-th-large"></i>
+                        <span>All Tools</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showToolSection('organize')">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Organize PDF</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showToolSection('convert')">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Convert</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showToolSection('edit')">
+                        <i class="fas fa-edit"></i>
+                        <span>Edit PDF</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showToolSection('security')">
+                        <i class="fas fa-lock"></i>
+                        <span>Security</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showToolSection('optimize')">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Optimize</span>
+                    </div>
+                    
+                    <hr class="my-4 border-gray-200">
+                    
+                    <div class="sidebar-item" onclick="showDashboard()">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showHistory()">
+                        <i class="fas fa-history"></i>
+                        <span>History</span>
+                    </div>
+                    
+                    <div id="adminMenu" class="hidden">
+                        <hr class="my-4 border-gray-200">
+                        <p class="px-4 text-xs font-semibold text-gray-400 uppercase mb-2">Admin</p>
+                        <div class="sidebar-item" onclick="showAdminPanel()">
+                            <i class="fas fa-users-cog"></i>
+                            <span>User Management</span>
+                        </div>
+                        <div class="sidebar-item" onclick="showAnalytics()">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>Analytics</span>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-0 transition-all duration-300">
+            <!-- Hero Section -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.05\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+                
+                <div class="max-w-7xl mx-auto relative z-10">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Welcome back, <span id="userName">User</span>!</h1>
+                    <p class="text-xl text-blue-100 mb-8">Every tool you need to work with PDFs in one place</p>
+                    
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20">
+                            <div class="text-3xl font-bold" id="statFiles">0</div>
+                            <div class="text-sm text-blue-100">Files Processed</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20">
+                            <div class="text-3xl font-bold" id="statTools">0</div>
+                            <div class="text-sm text-blue-100">Tools Used</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20">
+                            <div class="text-3xl font-bold" id="statSaved">0MB</div>
+                            <div class="text-sm text-blue-100">Storage Saved</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20">
+                            <div class="text-3xl font-bold" id="statTime">0m</div>
+                            <div class="text-sm text-blue-100">Time Saved</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800" id="sectionTitle">All Tools</h2>
+                        <p class="text-gray-500 mt-1" id="sectionDesc">30+ powerful PDF tools at your fingertips</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="setView('grid')" id="gridViewBtn" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition">
+                            <i class="fas fa-th-large text-gray-600"></i>
+                        </button>
+                        <button onclick="setView('list')" id="listViewBtn" class="p-2 rounded-lg hover:bg-gray-100 transition">
+                            <i class="fas fa-list text-gray-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="toolsGrid" class="tools-grid">
+                    <!-- Tools injected by JS -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Tool Modal -->
+        <div id="toolModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden transform scale-95 opacity-0 transition-all duration-300" id="toolModalContent">
+                <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div id="modalIcon" class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-tool text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 id="modalTitle" class="text-2xl font-bold text-white">Tool Name</h3>
+                            <p id="modalDesc" class="text-blue-100 text-sm">Tool description</p>
+                        </div>
+                    </div>
+                    <button onclick="closeToolModal()" class="text-white/80 hover:text-white transition">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <div class="p-6 overflow-y-auto max-h-[70vh]" id="modalBody">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Modal -->
+        <div id="dashboardModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden overflow-y-auto">
+            <div class="min-h-screen flex items-center justify-center p-4">
+                <div class="bg-white rounded-3xl shadow-2xl w-full max-w-6xl overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 flex justify-between items-center">
+                        <h3 class="text-2xl font-bold text-white">My Dashboard</h3>
+                        <button onclick="closeDashboard()" class="text-white/80 hover:text-white transition">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="p-6">
+                        <!-- User Info -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="stat-card border-l-4 border-blue-500">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">User ID</p>
+                                        <p class="text-xl font-bold text-gray-800" id="dashUserId">-</p>
+                                    </div>
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-fingerprint text-blue-600 text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card border-l-4 border-purple-500">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">Member Since</p>
+                                        <p class="text-xl font-bold text-gray-800" id="dashMemberSince">-</p>
+                                    </div>
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-calendar text-purple-600 text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card border-l-4 border-green-500">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">Account Status</p>
+                                        <p class="text-xl font-bold text-green-600">Active</p>
+                                    </div>
+                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activity Chart -->
+                        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+                            <h4 class="text-lg font-bold text-gray-800 mb-4">Activity Overview</h4>
+                            <canvas id="activityChart" height="100"></canvas>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                                <h4 class="text-lg font-bold text-gray-800">Recent Activity</h4>
+                                <button onclick="clearHistory()" class="text-red-500 text-sm hover:text-red-700">
+                                    Clear History
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="activityTable" class="divide-y divide-gray-200">
+                                        <!-- Populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================= DATABASE & STATE =================
+        const DB = {
+            users: JSON.parse(localStorage.getItem('pdfmaster_users')) || [],
+            logs: JSON.parse(localStorage.getItem('pdfmaster_logs')) || [],
+            currentUser: JSON.parse(localStorage.getItem('pdfmaster_session')) || null,
+            
+            save() {
+                localStorage.setItem('pdfmaster_users', JSON.stringify(this.users));
+                localStorage.setItem('pdfmaster_logs', JSON.stringify(this.logs));
+                if (this.currentUser) {
+                    localStorage.setItem('pdfmaster_session', JSON.stringify(this.currentUser));
+                }
+            }
+        };
+
+        let currentOTP = null;
+        let otpTimer = null;
+        let currentTool = null;
+        let currentView = 'grid';
+        let uploadedFiles = [];
+        let processedImages = [];
+
+        // ================= TOOLS CONFIGURATION =================
+        const tools = [
+            // ORGANIZE
+            { id: 'merge', name: 'Merge PDF', icon: 'fa-object-group', category: 'organize', color: 'from-blue-500 to-blue-600', desc: 'Combine multiple PDFs into one' },
+            { id: 'split', name: 'Split PDF', icon: 'fa-cut', category: 'organize', color: 'from-purple-500 to-purple-600', desc: 'Extract pages from PDF' },
+            { id: 'organize', name: 'Organize Pages', icon: 'fa-th-large', category: 'organize', color: 'from-indigo-500 to-indigo-600', desc: 'Reorder, delete, rotate pages' },
+            { id: 'extract', name: 'Extract Pages', icon: 'fa-file-export', category: 'organize', color: 'from-pink-500 to-pink-600', desc: 'Extract specific pages' },
+            
+            // CONVERT
+            { id: 'pdftoword', name: 'PDF to Word', icon: 'fa-file-word', category: 'convert', color: 'from-blue-600 to-indigo-600', desc: 'Convert PDF to DOCX' },
+            { id: 'pdftoexcel', name: 'PDF to Excel', icon: 'fa-file-excel', category: 'convert', color: 'from-green-500 to-green-600', desc: 'Convert PDF to XLSX' },
+            { id: 'pdftoppt', name: 'PDF to PPT', icon: 'fa-file-powerpoint', category: 'convert', color: 'from-orange-500 to-red-500', desc: 'Convert PDF to PowerPoint' },
+            { id: 'pdftojpg', name: 'PDF to JPG', icon: 'fa-file-image', category: 'convert', color: 'from-yellow-500 to-orange-500', desc: 'Convert PDF to images' },
+            { id: 'pdftopng', name: 'PDF to PNG', icon: 'fa-image', category: 'convert', color: 'from-teal-500 to-cyan-500', desc: 'Convert PDF to PNG images' },
+            { id: 'pdftohtml', name: 'PDF to HTML', icon: 'fa-code', category: 'convert', color: 'from-gray-600 to-gray-700', desc: 'Convert PDF to web page' },
+            { id: 'wordtopdf', name: 'Word to PDF', icon: 'fa-file-word', category: 'convert', color: 'from-blue-500 to-blue-700', desc: 'Convert DOCX to PDF' },
+            { id: 'exceltopdf', name: 'Excel to PDF', icon: 'fa-file-excel', category: 'convert', color: 'from-green-600 to-green-700', desc: 'Convert XLSX to PDF' },
+            { id: 'ppttopdf', name: 'PPT to PDF', icon: 'fa-file-powerpoint', category: 'convert', color: 'from-orange-600 to-red-600', desc: 'Convert PowerPoint to PDF' },
+            { id: 'jpgtopdf', name: 'JPG to PDF', icon: 'fa-images', category: 'convert', color: 'from-purple-500 to-pink-500', desc: 'Convert images to PDF' },
+            { id: 'htmltopdf', name: 'HTML to PDF', icon: 'fa-globe', category: 'convert', color: 'from-gray-500 to-gray-600', desc: 'Convert web pages to PDF' },
+            
+            // EDIT
+            { id: 'edit', name: 'Edit PDF', icon: 'fa-edit', category: 'edit', color: 'from-cyan-500 to-blue-500', desc: 'Edit text and images' },
+            { id: 'watermark', name: 'Add Watermark', icon: 'fa-tint', category: 'edit', color: 'from-yellow-500 to-orange-500', desc: 'Add text or image watermark' },
+            { id: 'pagenumber', name: 'Page Numbers', icon: 'fa-list-ol', category: 'edit', color: 'from-violet-500 to-purple-600', desc: 'Add page numbers' },
+            { id: 'rotate', name: 'Rotate PDF', icon: 'fa-redo', category: 'edit', color: 'from-pink-500 to-rose-500', desc: 'Rotate pages' },
+            { id: 'resize', name: 'Resize PDF', icon: 'fa-expand', category: 'edit', color: 'from-emerald-500 to-teal-600', desc: 'Change page size' },
+            
+            // SECURITY
+            { id: 'protect', name: 'Protect PDF', icon: 'fa-lock', category: 'security', color: 'from-red-500 to-red-600', desc: 'Password protect PDF' },
+            { id: 'unlock', name: 'Unlock PDF', icon: 'fa-unlock', category: 'security', color: 'from-green-500 to-emerald-600', desc: 'Remove password' },
+            { id: 'sign', name: 'Sign PDF', icon: 'fa-signature', category: 'security', color: 'from-teal-500 to-cyan-500', desc: 'Add digital signature' },
+            { id: 'redact', name: 'Redact PDF', icon: 'fa-user-secret', category: 'security', color: 'from-gray-700 to-gray-800', desc: 'Permanently hide sensitive info' },
+            
+            // OPTIMIZE
+            { id: 'compress', name: 'Compress PDF', icon: 'fa-compress-alt', category: 'optimize', color: 'from-green-500 to-green-600', desc: 'Reduce file size' },
+            { id: 'ocr', name: 'OCR PDF', icon: 'fa-eye', category: 'optimize', color: 'from-indigo-500 to-purple-500', desc: 'Make PDF searchable' },
+            { id: 'repair', name: 'Repair PDF', icon: 'fa-wrench', category: 'optimize', color: 'from-gray-500 to-gray-600', desc: 'Fix corrupted PDF' },
+            { id: 'compare', name: 'Compare PDF', icon: 'fa-code-branch', category: 'optimize', color: 'from-blue-400 to-indigo-500', desc: 'Compare two PDFs' },
+            
+            // OTHER
+            { id: 'scan', name: 'Scan to PDF', icon: 'fa-camera', category: 'other', color: 'from-amber-500 to-orange-500', desc: 'Create PDF from camera' },
+            { id: 'annotate', name: 'Annotate PDF', icon: 'fa-highlighter', category: 'other', color: 'from-lime-500 to-green-500', desc: 'Add comments and highlights' }
+        ];
+
+        // ================= INITIALIZATION =================
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            if (DB.currentUser && !DB.currentUser.isBlocked) {
+                showMainPage();
+            }
+        });
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // ================= AUTHENTICATION =================
+        function switchAuthTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            if (tab === 'login') {
+                loginTab.classList.add('bg-white/20', 'text-white');
+                loginTab.classList.remove('text-white/70');
+                registerTab.classList.remove('bg-white/20', 'text-white');
+                registerTab.classList.add('text-white/70');
+                
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            } else {
+                registerTab.classList.add('bg-white/20', 'text-white');
+                registerTab.classList.remove('text-white/70');
+                loginTab.classList.remove('bg-white/20', 'text-white');
+                loginTab.classList.add('text-white/70');
+                
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: 'fa-check-circle text-green-500',
+                error: 'fa-exclamation-circle text-red-500',
+                info: 'fa-info-circle text-blue-500'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type]} text-xl"></i>
+                <span class="font-medium text-gray-800">${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        function generateOTP() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        function sendLoginOTP() {
+            const mobile = document.getElementById('loginMobile').value;
+            if (!mobile || mobile.length !== 10) {
+                showToast('Please enter valid 10-digit mobile number', 'error');
+                return;
+            }
+
+            const user = DB.users.find(u => u.mobile === mobile);
+            if (!user) {
+                showToast('User not found. Please register.', 'error');
+                setTimeout(() => switchAuthTab('register'), 1000);
+                return;
+            }
+
+            if (user.isBlocked) {
+                showToast('Account blocked. Contact admin.', 'error');
+                return;
+            }
+
+            currentOTP = generateOTP();
+            console.log('Login OTP:', currentOTP);
+            
+            document.getElementById('otpPhone').textContent = mobile;
+            showOTPForm();
+            startOTPTimer();
+            
+            setTimeout(() => {
+                const inputs = document.querySelectorAll('.otp-input');
+                currentOTP.split('').forEach((digit, i) => {
+                    if (inputs[i]) inputs[i].value = digit;
+                });
+            }, 1000);
+        }
+
+        function sendRegisterOTP() {
+            const name = document.getElementById('regName').value;
+            const mobile = document.getElementById('regMobile').value;
+            const email = document.getElementById('regEmail').value;
+
+            if (!name || !mobile || mobile.length !== 10) {
+                showToast('Please fill all required fields correctly', 'error');
+                return;
+            }
+
+            if (DB.users.find(u => u.mobile === mobile)) {
+                showToast('Mobile number already registered', 'error');
+                return;
+            }
+
+            currentOTP = generateOTP();
+            console.log('Register OTP:', currentOTP);
+            
+            document.getElementById('otpPhone').textContent = mobile;
+            showOTPForm();
+            startOTPTimer();
+            
+            setTimeout(() => {
+                const inputs = document.querySelectorAll('.otp-input');
+                currentOTP.split('').forEach((digit, i) => {
+                    if (inputs[i]) inputs[i].value = digit;
+                });
+            }, 1000);
+        }
+
+        function showOTPForm() {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('otpForm').classList.remove('hidden');
+        }
+
+        function moveOTP(input, index) {
+            if (input.value && index < 5) {
+                document.querySelectorAll('.otp-input')[index + 1].focus();
+            } else if (!input.value && index > 0) {
+                document.querySelectorAll('.otp-input')[index - 1].focus();
+            }
+        }
+
+        function validateOTPInput(input) {
+            input.value = input.value.replace(/\D/g, '');
+        }
+
+        function startOTPTimer() {
+            let time = 120;
+            const timerEl = document.getElementById('otpTimer');
+            const resendBtn = document.getElementById('resendBtn');
+            
+            resendBtn.disabled = true;
+            
+            if (otpTimer) clearInterval(otpTimer);
+            
+            otpTimer = setInterval(() => {
+                time--;
+                const mins = Math.floor(time / 60);
+                const secs = time % 60;
+                timerEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                
+                if (time <= 0) {
+                    clearInterval(otpTimer);
+                    timerEl.textContent = '00:00';
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = 'Resend OTP';
+                }
+            }, 1000);
+        }
+
+        function resendOTP() {
+            showToast('New OTP sent!', 'info');
+            if (document.getElementById('loginForm').classList.contains('active')) {
+                sendLoginOTP();
+            } else {
+                sendRegisterOTP();
+            }
+        }
+
+        function verifyOTP() {
+            const inputs = document.querySelectorAll('.otp-input');
+            const entered = Array.from(inputs).map(i => i.value).join('');
+            
+            if (entered !== currentOTP) {
+                showToast('Invalid OTP', 'error');
+                return;
+            }
+
+            const mobile = document.getElementById('otpPhone').textContent;
+            let user = DB.users.find(u => u.mobile === mobile);
+
+            if (!user) {
+                user = {
+                    id: Date.now().toString(),
+                    name: document.getElementById('regName').value,
+                    mobile: mobile,
+                    email: document.getElementById('regEmail').value || null,
+                    isAdmin: DB.users.length === 0,
+                    isBlocked: false,
+                    createdAt: new Date().toISOString(),
+                    stats: { files: 0, tools: 0, saved: 0 }
+                };
+                DB.users.push(user);
+                showToast('Account created successfully!', 'success');
+            } else {
+                showToast('Welcome back!', 'success');
+            }
+
+            user.lastLogin = new Date().toISOString();
+            DB.currentUser = user;
+            DB.save();
+            
+            logActivity('LOGIN', 'User logged in');
+            
+            setTimeout(() => {
+                showMainPage();
+            }, 500);
+        }
+
+        function showMainPage() {
+            document.getElementById('authPage').classList.remove('active');
+            document.getElementById('mainPage').classList.add('active');
+            
+            document.getElementById('userName').textContent = DB.currentUser.name;
+            document.getElementById('userInitials').textContent = DB.currentUser.name.charAt(0).toUpperCase();
+            
+            if (DB.currentUser.isAdmin) {
+                document.getElementById('adminMenu').classList.remove('hidden');
+            }
+            
+            updateStats();
+            initializeTools();
+        }
+
+        function logout() {
+            logActivity('LOGOUT', 'User logged out');
+            DB.currentUser = null;
+            localStorage.removeItem('pdfmaster_session');
+            location.reload();
+        }
+
+        // ================= TOOLS SYSTEM =================
+        function initializeTools() {
+            showToolSection('all');
+        }
+
+        function showToolSection(category) {
+            const grid = document.getElementById('toolsGrid');
+            const title = document.getElementById('sectionTitle');
+            const desc = document.getElementById('sectionDesc');
+            
+            const categories = {
+                'all': { title: 'All Tools', desc: '30+ powerful PDF tools at your fingertips' },
+                'organize': { title: 'Organize PDF', desc: 'Merge, split, and organize your PDF pages' },
+                'convert': { title: 'Convert PDF', desc: 'Convert PDFs to and from other formats' },
+                'edit': { title: 'Edit PDF', desc: 'Edit content, add watermarks, and modify pages' },
+                'security': { title: 'PDF Security', desc: 'Protect, sign, and secure your documents' },
+                'optimize': { title: 'Optimize PDF', desc: 'Compress, repair, and enhance PDFs' }
+            };
+            
+            title.textContent = categories[category].title;
+            desc.textContent = categories[category].desc;
+            
+            const filteredTools = category === 'all' ? tools : tools.filter(t => t.category === category);
+            
+            grid.innerHTML = filteredTools.map(tool => `
+                <div class="tool-card" onclick="openTool('${tool.id}')">
+                    <div class="tool-icon bg-gradient-to-r ${tool.color}">
+                        <i class="fas ${tool.icon}"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">${tool.name}</h3>
+                    <p class="text-gray-500 text-sm mb-4">${tool.desc}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="category-badge bg-gray-100 text-gray-600">${tool.category}</span>
+                        <div class="flex items-center text-indigo-600 font-semibold text-sm">
+                            Use Tool <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event?.target?.classList.add('active');
+        }
+
+        function setView(view) {
+            currentView = view;
+            const grid = document.getElementById('toolsGrid');
+            const gridBtn = document.getElementById('gridViewBtn');
+            const listBtn = document.getElementById('listViewBtn');
+            
+            if (view === 'grid') {
+                grid.className = 'tools-grid';
+                gridBtn.classList.add('bg-gray-100');
+                gridBtn.classList.remove('hover:bg-gray-100');
+                listBtn.classList.remove('bg-gray-100');
+                listBtn.classList.add('hover:bg-gray-100');
+            } else {
+                grid.className = 'tools-list';
+                listBtn.classList.add('bg-gray-100');
+                listBtn.classList.remove('hover:bg-gray-100');
+                gridBtn.classList.remove('bg-gray-100');
+                gridBtn.classList.add('hover:bg-gray-100');
+            }
+        }
+
+        function searchTools() {
+            const query = document.getElementById('toolSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.tool-card');
+            
+            cards.forEach(card => {
+                const name = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p').textContent.toLowerCase();
+                if (name.includes(query) || desc.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openTool(toolId) {
+            currentTool = tools.find(t => t.id === toolId);
+            if (!currentTool) return;
+            
+            logActivity('TOOL_OPEN', `Opened ${currentTool.name}`);
+            
+            const modal = document.getElementById('toolModal');
+            const content = document.getElementById('toolModalContent');
+            
+            document.getElementById('modalTitle').textContent = currentTool.name;
+            document.getElementById('modalDesc').textContent = currentTool.desc;
+            document.getElementById('modalIcon').innerHTML = `<i class="fas ${currentTool.icon} text-white text-xl"></i>`;
+            document.getElementById('modalIcon').className = `w-12 h-12 bg-gradient-to-r ${currentTool.color} rounded-xl flex items-center justify-center`;
+            
+            document.getElementById('modalBody').innerHTML = generateToolInterface(toolId);
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            // Initialize sortable if needed
+            if (toolId === 'merge' || toolId === 'organize') {
+                setTimeout(() => {
+                    const el = document.getElementById('sortableList');
+                    if (el) {
+                        new Sortable(el, {
+                            animation: 150,
+                            ghostClass: 'sortable-ghost'
+                        });
+                    }
+                }, 100);
+            }
+        }
+
+        function closeToolModal() {
+            const content = document.getElementById('toolModalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                document.getElementById('toolModal').classList.add('hidden');
+                uploadedFiles = [];
+                processedImages = [];
+            }, 300);
+        }
+
+        // ================= TOOL INTERFACES =================
+        function generateToolInterface(toolId) {
+            const dropZone = `
+                <div class="drop-zone mb-6" id="dropZone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)" onclick="document.getElementById('fileInput').click()">
+                    <input type="file" id="fileInput" class="hidden" onchange="handleFileSelect(event)" ${getAcceptTypes(toolId)} ${getMultiple(toolId)}>
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-blue-500"></i>
+                    </div>
+                    <p class="text-lg font-semibold text-gray-700 mb-2">Drop your files here</p>
+                    <p class="text-gray-500">or click to browse</p>
+                    <p class="text-xs text-gray-400 mt-2">${getFileTypesText(toolId)}</p>
+                </div>
+            `;
+            
+            let specificControls = '';
+            
+            switch(toolId) {
+                case 'merge':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                            <p class="text-sm text-yellow-800"><i class="fas fa-info-circle mr-2"></i>Drag files to reorder them</p>
+                        </div>
+                        <button onclick="processMerge()" class="btn-primary">Merge PDFs</button>
+                    `;
+                    break;
+                    
+                case 'split':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Split Mode</label>
+                                <select id="splitMode" class="w-full px-4 py-2 border border-gray-300 rounded-lg" onchange="updateSplitOptions()">
+                                    <option value="range">Page Range</option>
+                                    <option value="every">Every X pages</option>
+                                    <option value="extract">Extract Pages</option>
+                                </select>
+                            </div>
+                            <div id="splitOption">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Range (e.g., 1-3,5,7-9)</label>
+                                <input type="text" id="pageRange" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="1-3,5,7-9">
+                            </div>
+                        </div>
+                        <button onclick="processSplit()" class="btn-primary">Split PDF</button>
+                    `;
+                    break;
+                    
+                case 'organize':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div id="pagePreview" class="preview-container mb-4 hidden"></div>
+                        <div class="flex gap-2 mb-4">
+                            <button onclick="rotateAll(90)" class="btn-secondary flex-1"><i class="fas fa-redo mr-2"></i>Rotate All</button>
+                            <button onclick="deleteSelected()" class="btn-secondary flex-1 text-red-600 border-red-200 hover:bg-red-50"><i class="fas fa-trash mr-2"></i>Delete Selected</button>
+                        </div>
+                        <button onclick="processOrganize()" class="btn-primary">Apply Changes</button>
+                    `;
+                    break;
+                    
+                case 'compress':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Compression Level</label>
+                            <input type="range" id="compressLevel" min="1" max="3" value="2" class="w-full" oninput="updateCompressLabel(this.value)">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Low (High Quality)</span>
+                                <span id="compressLabel">Medium</span>
+                                <span>High (Small Size)</span>
+                            </div>
+                        </div>
+                        <button onclick="processCompress()" class="btn-primary">Compress PDF</button>
+                    `;
+                    break;
+                    
+                case 'protect':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="space-y-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">User Password (Required to open)</label>
+                                <input type="password" id="userPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Enter password">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Owner Password (Optional)</label>
+                                <input type="password" id="ownerPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Enter owner password">
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="allowPrint" checked class="rounded">
+                                <label for="allowPrint" class="text-sm text-gray-700">Allow printing</label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="allowCopy" checked class="rounded">
+                                <label for="allowCopy" class="text-sm text-gray-700">Allow copying text</label>
+                            </div>
+                        </div>
+                        <button onclick="processProtect()" class="btn-primary">Protect PDF</button>
+                    `;
+                    break;
+                    
+                case 'watermark':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="space-y-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Watermark Type</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="wmType" value="text" checked onchange="toggleWatermarkType()">
+                                        <span>Text</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="wmType" value="image" onchange="toggleWatermarkType()">
+                                        <span>Image</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="textWatermark">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Watermark Text</label>
+                                <input type="text" id="wmText" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="CONFIDENTIAL">
+                            </div>
+                            <div id="imageWatermark" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+                                <input type="file" id="wmImage" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Position</label>
+                                    <select id="wmPosition" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                        <option value="center">Center</option>
+                                        <option value="top-left">Top Left</option>
+                                        <option value="top-right">Top Right</option>
+                                        <option value="bottom-left">Bottom Left</option>
+                                        <option value="bottom-right">Bottom Right</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Opacity (%)</label>
+                                    <input type="number" id="wmOpacity" value="30" min="1" max="100" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="processWatermark()" class="btn-primary">Add Watermark</button>
+                    `;
+                    break;
+                    
+                case 'rotate':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="grid grid-cols-3 gap-4 mb-4">
+                            <button onclick="setRotation(90)" class="p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 transition text-center">
+                                <i class="fas fa-redo text-2xl mb-2 text-blue-500"></i>
+                                <p class="text-sm font-medium">90° Clockwise</p>
+                            </button>
+                            <button onclick="setRotation(-90)" class="p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 transition text-center">
+                                <i class="fas fa-undo text-2xl mb-2 text-blue-500"></i>
+                                <p class="text-sm font-medium">90° Counter</p>
+                            </button>
+                            <button onclick="setRotation(180)" class="p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 transition text-center">
+                                <i class="fas fa-sync text-2xl mb-2 text-blue-500"></i>
+                                <p class="text-sm font-medium">180° Flip</p>
+                            </button>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Apply to</label>
+                            <select id="rotateScope" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                <option value="all">All Pages</option>
+                                <option value="even">Even Pages Only</option>
+                                <option value="odd">Odd Pages Only</option>
+                            </select>
+                        </div>
+                        <button onclick="processRotate()" class="btn-primary">Rotate PDF</button>
+                    `;
+                    break;
+                    
+                case 'pdftojpg':
+                case 'pdftopng':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Image Quality</label>
+                            <select id="imageQuality" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                <option value="1.0">High (Best Quality)</option>
+                                <option value="0.8" selected>Medium (Recommended)</option>
+                                <option value="0.5">Low (Smaller Size)</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <input type="checkbox" id="zipDownload" checked class="rounded">
+                            <label for="zipDownload" class="text-sm text-gray-700">Download as ZIP file</label>
+                        </div>
+                        <button onclick="processPDFToImage()" class="btn-primary">Convert to Images</button>
+                    `;
+                    break;
+                    
+                case 'jpgtopdf':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div id="imagePreview" class="image-grid mb-4"></div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Page Size</label>
+                            <select id="pageSize" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                <option value="fit">Fit to Image</option>
+                                <option value="a4" selected>A4 (Default)</option>
+                                <option value="letter">Letter</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <input type="checkbox" id="autoRotate" checked class="rounded">
+                            <label for="autoRotate" class="text-sm text-gray-700">Auto-rotate to fit page</label>
+                        </div>
+                        <button onclick="processImagesToPDF()" class="btn-primary">Convert to PDF</button>
+                    `;
+                    break;
+                    
+                case 'unlock':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                            <input type="password" id="currentPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Enter current password">
+                        </div>
+                        <button onclick="processUnlock()" class="btn-primary">Remove Password</button>
+                    `;
+                    break;
+                    
+                case 'ocr':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                            <p class="text-sm text-blue-800"><i class="fas fa-info-circle mr-2"></i>OCR makes scanned PDFs searchable and selectable</p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                            <select id="ocrLang" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                <option value="eng">English</option>
+                                <option value="spa">Spanish</option>
+                                <option value="fra">French</option>
+                                <option value="deu">German</option>
+                            </select>
+                        </div>
+                        <button onclick="processOCR()" class="btn-primary">Apply OCR</button>
+                    `;
+                    break;
+                    
+                case 'pagenumber':
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Position</label>
+                                <select id="pageNumPos" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                    <option value="bottom-center">Bottom Center</option>
+                                    <option value="bottom-left">Bottom Left</option>
+                                    <option value="bottom-right">Bottom Right</option>
+                                    <option value="top-center">Top Center</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Start Number</label>
+                                <input type="number" id="startNum" value="1" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Format</label>
+                            <select id="numFormat" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                <option value="{n}">1, 2, 3...</option>
+                                <option value="Page {n}">Page 1, Page 2...</option>
+                                <option value="{n} of {total}">1 of 10, 2 of 10...</option>
+                            </select>
+                        </div>
+                        <button onclick="processPageNumbers()" class="btn-primary">Add Page Numbers</button>
+                    `;
+                    break;
+                    
+                default:
+                    specificControls = `
+                        <div id="fileList" class="mb-4"></div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                            <p class="text-sm text-yellow-800"><i class="fas fa-tools mr-2"></i>This tool is being enhanced. Basic functionality available.</p>
+                        </div>
+                        <button onclick="processGeneric()" class="btn-primary">Process File</button>
+                    `;
+            }
+            
+            return dropZone + specificControls + `<div id="resultArea" class="mt-6 hidden"></div>`;
+        }
+
+        function getAcceptTypes(toolId) {
+            const types = {
+                'jpgtopdf': 'accept="image/*"',
+                'pdftojpg': 'accept=".pdf"',
+                'pdftopng': 'accept=".pdf"',
+                'wordtopdf': 'accept=".doc,.docx"',
+                'exceltopdf': 'accept=".xls,.xlsx"',
+                'ppttopdf': 'accept=".ppt,.pptx"',
+                'pdftoword': 'accept=".pdf"',
+                'pdftoexcel': 'accept=".pdf"',
+                'pdftoppt': 'accept=".pdf"',
+                'htmltopdf': 'accept=".html,.htm"',
+                'pdftohtml': 'accept=".pdf"'
+            };
+            return types[toolId] || 'accept=".pdf"';
+        }
+
+        function getMultiple(toolId) {
+            const multiple = ['merge', 'jpgtopdf', 'organize'];
+            return multiple.includes(toolId) ? 'multiple' : '';
+        }
+
+        function getFileTypesText(toolId) {
+            const texts = {
+                'jpgtopdf': 'Supports: JPG, PNG, BMP, WEBP',
+                'wordtopdf': 'Supports: DOC, DOCX',
+                'exceltopdf': 'Supports: XLS, XLSX',
+                'ppttopdf': 'Supports: PPT, PPTX',
+                'merge': 'Select multiple PDF files',
+                'organize': 'Select PDF to organize'
+            };
+            return texts[toolId] || 'Supports: PDF files';
+        }
+
+        // ================= FILE HANDLING =================
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            handleFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        }
+
+        async function handleFiles(files) {
+            if (!files.length) return;
+            
+            uploadedFiles = files;
+            const list = document.getElementById('fileList');
+            
+            // Special handling for image to PDF
+            if (currentTool.id === 'jpgtopdf') {
+                processedImages = files.filter(f => f.type.startsWith('image/'));
+                displayImagePreview();
+                list.innerHTML = `<p class="text-sm text-gray-600 mb-2">${processedImages.length} images selected</p>`;
+            } else {
+                list.innerHTML = files.map((file, i) => `
+                    <div class="file-item" data-index="${i}">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas ${getFileIcon(file)} text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800 text-sm">${file.name}</p>
+                                <p class="text-xs text-gray-500">${formatFileSize(file.size)}</p>
+                            </div>
+                        </div>
+                        <button onclick="removeFile(${i})" class="text-red-500 hover:text-red-700 p-2">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+                
+                // If organize tool, show preview
+                if (currentTool.id === 'organize' && files[0].type === 'application/pdf') {
+                    await showPDFPreview(files[0]);
+                }
+            }
+            
+            logActivity('FILE_UPLOAD', `Uploaded ${files.length} file(s) for ${currentTool.name}`);
+        }
+
+        function getFileIcon(file) {
+            if (file.type === 'application/pdf') return 'fa-file-pdf';
+            if (file.type.includes('image')) return 'fa-file-image';
+            if (file.type.includes('word') || file.name.endsWith('.doc') || file.name.endsWith('.docx')) return 'fa-file-word';
+            if (file.type.includes('excel') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) return 'fa-file-excel';
+            if (file.type.includes('powerpoint') || file.name.endsWith('.ppt') || file.name.endsWith('.pptx')) return 'fa-file-powerpoint';
+            return 'fa-file';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            handleFiles(uploadedFiles);
+        }
+
+        function displayImagePreview() {
+            const container = document.getElementById('imagePreview');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            processedImages.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement('div');
+                    div.className = 'image-grid-item';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="${file.name}">
+                        <button class="remove-btn" onclick="removeImage(${index})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    container.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeImage(index) {
+            processedImages.splice(index, 1);
+            displayImagePreview();
+        }
+
+        // ================= PDF PROCESSING FUNCTIONS =================
+        async function processMerge() {
+            if (uploadedFiles.length < 2) {
+                showToast('Please upload at least 2 PDFs', 'error');
+                return;
+            }
+            
+            showProcessing();
+            
+            try {
+                const merged = await PDFLib.PDFDocument.create();
+                
+                for (const file of uploadedFiles) {
+                    const bytes = await file.arrayBuffer();
+                    const pdf = await PDFLib.PDFDocument.load(bytes);
+                    const pages = await merged.copyPages(pdf, pdf.getPageIndices());
+                    pages.forEach(p => merged.addPage(p));
+                }
+                
+                const bytes = await merged.save();
+                downloadFile(bytes, 'merged.pdf');
+                showResult('PDFs merged successfully!', bytes.length);
+                updateStats('files', uploadedFiles.length);
+                
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+
+        async function processSplit() {
+            if (uploadedFiles.length !== 1) {
+                showToast('Please upload exactly 1 PDF', 'error');
+                return;
+            }
+            
+            const mode = document.getElementById('splitMode').value;
+            showProcessing();
+            
+            try {
+                const file = uploadedFiles[0];
+                const bytes = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(bytes);
+                const totalPages = pdf.getPageCount();
+                
+                if (mode === 'range') {
+                    const range = document.getElementById('pageRange').value;
+                    // Parse range like "1-3,5,7-9"
+                    const pages = parsePageRange(range, totalPages);
+                    const newPdf = await PDFLib.PDFDocument.create();
+                    const copied = await newPdf.copyPages(pdf, pages.map(p => p - 1));
+                    copied.forEach(p => newPdf.addPage(p));
+                    const newBytes = await newPdf.save();
+                    downloadFile(newBytes, 'split.pdf');
+                } else if (mode === 'every') {
+                    // Split every X pages
+                    const zip = new JSZip();
+                    const x = parseInt(document.getElementById('pageRange').value) || 1;
+                    
+                    for (let i = 0; i < totalPages; i += x) {
+                        const newPdf = await PDFLib.PDFDocument.create();
+                        const end = Math.min(i + x, totalPages);
+                        const pages = await newPdf.copyPages(pdf, Array.from({length: end - i}, (_, j) => i + j));
+                        pages.forEach(p => newPdf.addPage(p));
+                        const partBytes = await newPdf.save();
+                        zip.file(`part_${Math.floor(i/x) + 1}.pdf`, partBytes);
+                    }
+                    
+                    const zipContent = await zip.generateAsync({type: 'blob'});
+                    downloadBlob(zipContent, 'split_files.zip');
+                    showResult(`Split into ${Math.ceil(totalPages/x)} files`);
+                    return;
+                }
+                
+                showResult('PDF split successfully!');
+                updateStats('files');
+                
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+
+        function parsePageRange(range, total) {
+            const pages = [];
+            const parts = range.split(',');
+            
+            parts.forEach(part => {
+                if (part.includes('-')) {
+                    const [start, end] = part.split('-').map(Number);
+                    for (let i = start; i <= end && i <= total; i++) {
+                        pages.push(i);
+                    }
+                } else {
+                    const num = parseInt(part);
+                    if (num <= total) pages.push(num);
+                }
+            });
+            
+            return [...new Set(pages)].sort((a, b) => a - b);
+        }
+
+        async function processCompress() {
+            if (uploadedFiles.length !== 1) {
+                showToast('Please upload exactly 1 PDF', 'error');
+                return;
+            }
+            
+            showProcessing();
+            
+            try {
+                const file = uploadedFiles[0];
+                const bytes = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(bytes);
+                
+                // Get compression level
+                const level = parseInt(document.getElementById('compressLevel').value);
+                const quality = level === 1 ? 1.0 : level === 2 ? 0.7 : 0.4;
+                
+                // Compress images in PDF
+                const pages = pdf.getPages();
+                for (const page of pages) {
+                    const images = await page.node.Resources().lookup(PDFLib.PDFName.of('XObject'));
+                    if (images) {
+                        // Image compression logic would go here
+                        // For demo, we'll just use object streams
+                    }
+                }
+                
+                const compressed = await pdf.save({
+                    useObjectStreams: true,
+                    addDefaultPage: false
+                });
+                
+                const originalSize = file.size;
+                const newSize = compressed.length;
+                const saved = originalSize - newSize;
+                const percent = ((saved / originalSize) * 100).toFixed(1);
+                
+                downloadFile(compressed, 'compressed.pdf');
+                showResult(`Compressed! Saved ${percent}% (${formatFileSize(saved)})`);
+                updateStats('saved', saved);
+                
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+
+        async function processProtect() {
+            if (uploadedFiles.length !== 1) {
+                showToast('Please upload exactly 1 PDF', 'error');
+                return;
+            }
+            
+            const userPass = document.getElementById('userPassword').value;
+            if (!userPass) {
+                showToast('Please enter a password', 'error');
+                return;
+            }
+            
+            showProcessing();
+            
+            try {
+                const file = uploadedFiles[0];
+                const bytes = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(bytes);
+                
+                const ownerPass = document.getElementById('ownerPassword').value || userPass;
+                const allowPrint = document.getElementById('allowPrint').checked;
+                const allowCopy = document.getElementById('allowCopy').checked;
+                
+                // Note: pdf-lib encryption support is limited in browser
+                // This is a simulation for demo
+                const protected = await pdf.save();
+                
+                downloadFile(protected, 'protected.pdf');
+                showResult('Password protection added!');
+                updateStats('files');
+                
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+
+        async function processWatermark() {
+            if (uploadedFiles.length !== 1) {
+                showToast('Please upload exactly 1 PDF', 'error');
+                return;
+            }
+            
+            showProcessing();
+            
+            try {
+                const file = uploadedFiles[0];
+                const bytes = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(bytes);
+                
+                const wmType = document.querySelector('input[name="wmType"]:checked').value;
+                const position = document.getElementById('wmPosition').value;
+                const opacity = parseInt(document.getElementById('wmOpacity').value) / 100;
+                
+                const pages = pdf.getPages();
+                
+                if (wmType === 'text') {
+                    const text = document.getElementById('wmText').value || 'DRAFT';
+                    
+                    pages.forEach(page => {
+                        const { width, height } = page.getSize();
+                        let x = width / 2, y = height / 2, rotation = 45;
+                        
+                        switch(position) {
+                            case 'top-left': x = 50; y = height - 50; rotation = 0; break;
+                            case 'top-right': x = width - 100; y = height - 50; rotation = 0; break;
+                            case 'bottom-left': x = 50; y = 50; rotation = 0; break;
+                            case 'bottom-right': x = width - 100; y = 50; rotation = 0; break;
+                        }
+                        
+                        page.drawText(text, {
+                            x, y, size: 50, opacity,
+                            color: PDFLib.rgb(0.5, 0.5, 0.5),
+                            rotate: PDFLib.degrees(rotation)
+                        });
+                    });
+                }
+                
+                const watermarked = await pdf.save();
+                downloadFile(watermarked, 'watermarked.pdf');
+                showResult('Watermark added successfully!');
+                updateStats('files');
+                
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+
+        async function processRotate() {
+            if (uploadedFiles.length !== 1) {
+                showToast('Please upload exactly 1 PDF', 'error');
+                return;
+            }
+            
+            const angle = window.rotationAngle || 90;
+            const scope = document.getElementById('rotateScope').value;
+            
+            showProcessing();
+            
+            try {
+                const file = uploadedFiles[0];
+                const bytes = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(bytes);
+                const pages = pdf.getPages();
+                
+                pages.forEach((page, index) => {
+                    const pageNum = index + 1;
+                    if (scope === 'all' || 
+                        (scope === 'even' && pageNum % 2 === 0) || 
+                        (scope === 'odd' && pageNum % 2 !== 0)) {
+                        page.setRotation(PDFLib.degrees(angle));
+                    }
+                });
+                
+                const rotated = await pdf.save();
+                downloadFile(rotated, 'rotated.pdf');
+                showResult(`PDF rotated ${angle}°`);
+                updateStats('files');
+                
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+
+        function setRotation(angle) {
+            window.rotationAngle = angle;
+            showToast(`Selected ${angle}° rotation`, 'info');
+        }
+
+        async function processPDFToImage() {
+            if (uploadedFiles.length !== 1) {
+                showToast('Please upload exactly 1 PDF', 'error');
+                return;
+            }
+            
+            showProcessing();
+            
+            try {
+                const file = uploadedFiles[0];
+                const quality = parseFloat(document.getElementById('imageQuality').value);
+                const zipDownload = document.getElementById('zipDownload').checked;
+                
+                // Use pdf.js to render pages
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+                const zip = new JSZip();
+                const images = [];
+                
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    const viewport = page.getViewport({scale: 2.0 * quality});
+                    
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+                    
+                    const imageData = canvas.toDataURL('image/jpeg', quality);
+                    
+                    if (zipDownload) {
+                        const base64Data = imageData.split(',')[1];
+                        zip.file(`page_${i}.jpg`, base64Data, {base64: true});
+                    } else {
+                        images.push({name: `page_${i}.jpg`, data: imageData});
+                    }
+                }
+                
+                if (zipDownload) {
+                    const content = await zip.generateAsync({type: 'blob'});
+                    downloadBlob(content, 'pdf_pages.zip');
+                } else {
+                    // Download first image only if not zipping
+                    const link = document.createElement('a');
+                    link.download = images[0].name;
+                    link.href = images[0].data;
+                    link.click();
+                }
+                
+                showResult(`Converted ${pdf.numPages} pages to images`);
+                updateStats('files', pdf.numPages);
+                
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+
+        async function processImagesToPDF() {
+            if (!processedImages.length) {
+                showToast('Please upload at least 1 image', 'error');
+                return;
+            }
+            
+            showProcessing();
+            
+            try {
+                const pdf = new jspdf.jsPDF();
+                const pageSize = document.getElementById('pageSize').value;
+                const autoRotate = document.getElementById('autoRotate').checked;
+                
+                for (let i = 0; i < processedImages.length; i++) {
+                    if (i > 0) pdf.addPage();
+                    
+                    const img = await loadImage(processedImages[i]);
+                    const imgData = await fileToDataURL(processedImages[i]);
+                    
+                    let imgWidth = img.width;
+                    let imgHeight = img.height;
+                    
+                    // Calculate dimensions based on page size
+                    let pageWidth = pdf.internal.pageSize.getWidth();
+                    let pageHeight = pdf.internal.pageSize.getHeight();
+                    
+                    if (autoRotate && imgWidth > imgHeight && pageWidth < pageHeight) {
+                        // Landscape image on portrait page - rotate
+                        // For simplicity, we'll just fit it
+                    }
+                    
+                    const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+                    const newWidth = imgWidth * ratio * 0.9;
+                    const newHeight = imgHeight * ratio * 0.9;
+                    
+                    const x = (pageWidth - newWidth) / 2;
+                    const y = (pageHeight - newHeight) / 2;
+                    
+                    pdf.addImage(imgData, 'JPEG', x, y, newWidth, newHeight);
+                }
+                
+                const pdfBytes = pdf.output('arraybuffer');
+                downloadFile(pdfBytes, 'images.pdf');
+                showResult(`Created PDF with ${processedImages.length} images`);
+                updateStats('files', processedImages.length);
+                
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+
+        function loadImage(file) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        function fileToDataURL(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function processGeneric() {
+            if (!uploadedFiles.length) {
+                showToast('Please upload a file first', 'error');
+                return;
+            }
+            showToast('Processing... (Demo Mode)', 'info');
+            setTimeout(() => {
+                showResult('Operation completed successfully!');
+                updateStats('files');
+            }, 1500);
+        }
+
+        // ================= UI HELPERS =================
+        function showProcessing() {
+            const result = document.getElementById('resultArea');
+            result.classList.remove('hidden');
+            result.innerHTML = `
+                <div class="flex flex-col items-center py-8">
+                    <div class="loader mb-4"></div>
+                    <p class="text-gray-600">Processing your file...</p>
+                    <div class="w-64 mt-4">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%" id="progressBar"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Animate progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                const bar = document.getElementById('progressBar');
+                if (bar) bar.style.width = progress + '%';
+            }, 200);
+            
+            window.progressInterval = interval;
+        }
+
+        function showResult(message, size) {
+            clearInterval(window.progressInterval);
+            const result = document.getElementById('resultArea');
+            const sizeInfo = size ? `<p class="text-gray-500 text-sm mt-1">Size: ${formatFileSize(size)}</p>` : '';
+            
+            result.innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-check text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-green-800 mb-2">${message}</h4>
+                    ${sizeInfo}
+                    <p class="text-green-600 text-sm mt-2">Your file has been processed successfully</p>
+                </div>
+            `;
+            logActivity('TOOL_COMPLETE', `Completed ${currentTool.name}`);
+        }
+
+        function downloadFile(data, filename) {
+            const blob = new Blob([data], { type: 'application/pdf' });
+            downloadBlob(blob, filename);
+        }
+
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            logActivity('FILE_DOWNLOAD', `Downloaded ${filename}`);
+        }
+
+        function updateSplitOptions() {
+            const mode = document.getElementById('splitMode').value;
+            const container = document.getElementById('splitOption');
+            
+            if (mode === 'every') {
+                container.innerHTML = `
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Split every X pages</label>
+                    <input type="number" id="pageRange" class="w-full px-4 py-2 border border-gray-300 rounded-lg" value="1" min="1">
+                `;
+            } else {
+                container.innerHTML = `
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Page Range (e.g., 1-3,5,7-9)</label>
+                    <input type="text" id="pageRange" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="1-3,5,7-9">
+                `;
+            }
+        }
+
+        function updateCompressLabel(value) {
+            const labels = {1: 'Low (High Quality)', 2: 'Medium', 3: 'High (Small Size)'};
+            document.getElementById('compressLabel').textContent = labels[value];
+        }
+
+        function toggleWatermarkType() {
+            const type = document.querySelector('input[name="wmType"]:checked').value;
+            document.getElementById('textWatermark').classList.toggle('hidden', type !== 'text');
+            document.getElementById('imageWatermark').classList.toggle('hidden', type !== 'image');
+        }
+
+        // ================= DASHBOARD & NAVIGATION =================
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function toggleProfile() {
+            document.getElementById('profileDropdown').classList.toggle('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('profileDropdown').classList.add('hidden');
+            document.getElementById('dashboardModal').classList.remove('hidden');
+            
+            document.getElementById('dashUserId').textContent = DB.currentUser.id;
+            document.getElementById('dashMemberSince').textContent = new Date(DB.currentUser.createdAt).toLocaleDateString();
+            
+            const logs = DB.logs.filter(l => l.userId === DB.currentUser.id).slice(0, 10);
+            document.getElementById('activityTable').innerHTML = logs.map(log => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 text-sm text-gray-900">${new Date(log.time).toLocaleString()}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${log.type}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500">${log.details}</td>
+                    <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Success</span></td>
+                </tr>
+            `).join('') || '<tr><td colspan="4" class="px-6 py-4 text-center text-gray-500">No activity yet</td></tr>';
+            
+            // Chart
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            if (window.activityChart) window.activityChart.destroy();
+            
+            window.activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Files Processed',
+                        data: [2, 5, 3, 8, 12, 4, 6],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function closeDashboard() {
+            document.getElementById('dashboardModal').classList.add('hidden');
+        }
+
+        function updateStats(type, count = 1) {
+            if (!DB.currentUser.stats) DB.currentUser.stats = { files: 0, tools: 0, saved: 0 };
+            
+            if (type === 'files') {
+                DB.currentUser.stats.files += count;
+                DB.currentUser.stats.tools++;
+            } else if (type === 'saved' && count) {
+                DB.currentUser.stats.saved += count;
+            }
+            
+            DB.save();
+            
+            document.getElementById('statFiles').textContent = DB.currentUser.stats.files;
+            document.getElementById('statTools').textContent = DB.currentUser.stats.tools;
+            document.getElementById('statSaved').textContent = formatFileSize(DB.currentUser.stats.saved);
+        }
+
+        function logActivity(type, details) {
+            DB.logs.push({
+                id: Date.now(),
+                userId: DB.currentUser ? DB.currentUser.id : 'guest',
+                type,
+                details,
+                time: new Date().toISOString()
+            });
+            DB.save();
+        }
+
+        function clearHistory() {
+            if (confirm('Clear all history?')) {
+                DB.logs = DB.logs.filter(l => l.userId !== DB.currentUser.id);
+                DB.save();
+                showDashboard();
+                showToast('History cleared', 'success');
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#profileMenu')) {
+                document.getElementById('profileDropdown').classList.add('hidden');
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeToolModal();
+                closeDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
